@@ -1,0 +1,160 @@
+<!--Botones-->
+<section id="actions" class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a  href="#" class="btn btn-primary btn-block" data-togle='modal' data-target="#agregarClienteModal">
+                    <i class="fa fa-plus"></i>Agregar cliente
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- listados de clientes    -->
+<section id="clientes">
+    <div class="conteinter">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de clientes</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>saldo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let cliente of clientes;let i =index">
+                            <td>{{i+1}}</td>
+                            <td>{{cliente.nombre}} {{cliente.apellido}}</td>
+                            <td>{{cliente.saldo | currency:'S/. '}}</td>
+                            <td>
+                                <a routerLink="/cliente/editar/{{cliente.id}}" class="btn btn-secondary">
+                                    <i class="fa fa-angle-down"></i>Editar
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <!-- tarjetas laterales-->
+            <div class="col-md-3">
+                <div class="card text-center bg-danger text-white mb-3">
+                    <div class="card-body">
+                        <h3>saldo Total</h3>
+                        <h4 class="display-4">
+                            {{getSaldoTotal() | currency:'S/. '}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <!-- tarjetas laterales-->
+            <div class="col-md-3">
+                <div class="card text-center bg-success text-white mb-3">
+                    <div class="card-body">
+                        <h3>Total clientes</h3>
+                        <h4 class="display-4">
+                          <i class="fa fa-user"></i>  {{clientes?.length}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!--  Agregaer cliente modal -->
+<div class="" id="agregarClienteModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-while">
+             <h5 class="modal-title">Agregar cliente</h5>
+             <button class="close" data-dismiss="modal" #botonCerrar>
+                 <span>&times;</span>
+             </button>
+            </div>
+
+             <flash-messages></flash-messages>
+
+            <form #clienteForm="ngForm" (ngSubmit)="agregar(clienteForm)">
+                <div class="modal-body">
+                    <label for="nombre">Nombre</label>
+                    <input 
+                    type="text" 
+                    name="nombre" 
+                    class="from-control"
+                    #nombre=ngModel
+                    [(ngModel)]="cliente.nombre"
+                    [ngClass]="{'is-invalid':nombre.errors && nombre.touched}"
+                    required
+                    minlength="2">
+                    <div [hidden]="!nombre.errors?.required" class="invalid-feedback">
+                        nombre required
+                    </div>
+                    <div [hidden]="!nombre.errors?.minlength" class="invalid-feedback">
+                        minima extecion 2
+                    </div>
+                </div>
+                
+                <div class="modal-body">
+                    <label for="nombre">apellido</label>
+                    <input type="text" name="apellido" class="from-control"
+                    
+                    #apellido=ngModel
+                    [(ngModel)]="cliente.apellido"
+                    [ngClass]="{'is-invalid':apellido.errors && apellido.touched}"
+                    required
+                    minlength="2">
+                    <div [hidden]="!apellido.errors?.required" class="invalid-feedback">
+                        apellido required
+                    </div>
+                    <div [hidden]="!apellido.errors?.minlength" class="invalid-feedback">
+                        minima extecion 2
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <label for="saldo">salod</label>
+                    <input type="number" name="saldo" class="form-control"
+                    
+                    #saldo=ngModel
+                    [(ngModel)]="cliente.saldo"
+                    [ngClass]="{'is-invalid':saldo.errors && saldo.touched}"
+                    required
+                   
+                    >
+                    <div [hidden]="!saldo.errors?.required" class="invalid-feedback">
+                        saldo required
+                    </div>
+                
+                </div>
+                <div class="modal-body">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control"#email=ngModel
+                    [(ngModel)]="cliente.email"
+                    [ngClass]="{'is-invalid':email.errors && email.touched}"
+                    required
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    >
+                    <div [hidden]="!email.errors?.required" class="invalid-feedback">
+                        email required
+                    </div>
+                    <div [hidden]="!email.errors?.pattern" class="invalid-feedback">
+                        email no valido
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
